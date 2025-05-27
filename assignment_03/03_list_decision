@@ -1,0 +1,44 @@
+# Third practice using a list to validate one of the criteria.
+
+# List of visa-exempt countries (not complete - strictly for class).
+visa_exempt_countries = [
+    "United States", "Canada", "United Kingdom", "Germany",
+    "France", "Japan", "Australia", "Brazil", "Argentina", "Mexico"
+]
+
+print("Welcome to the Peru Tourist Visa Eligibility Checker.")
+
+# Get user input.
+citizenship = input("What is your country of citizenship? ").strip().title()
+
+if citizenship in visa_exempt_countries:
+    print(f"300As a citizen of {citizenship}, you do not need a tourist visa "
+          "for stays up to 90 days.")
+else:
+    print(f"Citizens of {citizenship} require a visa. Let's check your "
+          "eligibility.")
+
+    passport_validity = int(input("How many months until your passport "
+                                  "expires? "))
+    round_trip_ticket = input("Do you have a round-trip ticket? (Yes/No): ") \
+        .strip().capitalize()
+    accommodation = input("Do you have a hotel booking or invitation letter? "
+                          "(Yes/No): ").strip().capitalize()
+    bank_statements = input("Can you provide recent bank statements? "
+                            "(Yes/No): ").strip().capitalize()
+    criminal_record = input("Do you have a criminal record? (Yes/No): ") \
+        .strip().capitalize()
+
+    # Decision structure.
+    if passport_validity < 6:
+        print("❌ Not eligible: Passport must be valid for at least 6 months.")
+    elif round_trip_ticket != "Yes":
+        print("❌ Not eligible: You must have a round-trip ticket.")
+    elif accommodation != "Yes":
+        print("❌ Not eligible: You must have a hotel booking or invitation.")
+    elif bank_statements != "Yes":
+        print("❌ Not eligible: You must provide bank statements.")
+    elif criminal_record == "Yes":
+        print("❌ Not eligible: A clean criminal record is required.")
+    else:
+        print("✅ You are eligible to apply for a tourist visa to Peru.")
