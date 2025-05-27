@@ -31,14 +31,14 @@ else:
 
     # Decision structure.
     if passport_validity < 6:
-        print("❌ Not eligible: Passport must be valid for at least 6 months.")
+        print("Not eligible: Passport must be valid for at least 6 months.")
     elif round_trip_ticket != "Yes":
-        print("❌ Not eligible: You must have a round-trip ticket.")
+        print("Not eligible: You must have a round-trip ticket.")
     elif accommodation != "Yes":
-        print("❌ Not eligible: You must have a hotel booking or invitation.")
+        print("Not eligible: You must have a hotel booking or invitation.")
     elif bank_statements != "Yes":
-        print("❌ Not eligible: You must provide bank statements.")
+        print("Not eligible: You must provide bank statements.")
     elif criminal_record == "Yes":
-        print("❌ Not eligible: A clean criminal record is required.")
+        print("Not eligible: A clean criminal record is required.")
     else:
-        print("✅ You are eligible to apply for a tourist visa to Peru.")
+        print("You are eligible to apply for a tourist visa to Peru.")
