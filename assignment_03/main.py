@@ -21,18 +21,18 @@ house_ownership = input("Do you rent or own your home? ").strip().capitalize()
 
 # Determine whether the person qualifies.
 if salary < MIN_SALARY:
-    print(f"❌ You must earn at least ${MIN_SALARY:.2f} annually to"
+    print(f"You must earn at least ${MIN_SALARY:.2f} annually to"
           f"adopt a cat.")
 elif years_on_job < MIN_YEARS:
-    print(f"❌ You must have at least {MIN_YEARS} years of employment.")
+    print(f"You must have at least {MIN_YEARS} years of employment.")
 elif num_other_pets > MAX_PETS:
-    print(f"❌ You cannot have more than {MAX_PETS} other pets.")
+    print(f"You cannot have more than {MAX_PETS} other pets.")
 elif allergy != ALLERGIES:
-    print("❌ Unfortunately, cat allergies prevent adoption eligibility.")
+    print("Unfortunately, cat allergies prevent adoption eligibility.")
 elif house_ownership != OWN_RENT:
-    print("❌ You must own your home to adopt a cat.")
+    print("You must own your home to adopt a cat.")
 else:
-    print("✅ Congratulations! You are eligible to adopt a cat.")
+    print("Congratulations! You are eligible to adopt a cat.")
 
 # Assignment using AND, not ELIF (it is commented out)
 '''# This program determines whether someone can adopt a cat
@@ -57,9 +57,9 @@ if (salary >= MIN_SALARY and
         num_other_pets <= MAX_PETS and
         allergy == ALLERGIES and
         house_ownership == OWN_RENT):
-    print("✅ Congratulations! You are eligible to adopt a cat.")
+    print("Congratulations! You are eligible to adopt a cat.")
 else:
-    print("❌ You are not eligible to adopt a cat. See below:")
+    print("You are not eligible to adopt a cat. See below:")
 
     if salary < MIN_SALARY:
         print(f"- Your salary of ${salary:.2f} is below the required ${MIN_SALARY}.")
