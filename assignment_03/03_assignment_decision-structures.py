@@ -2,8 +2,8 @@
 
 print("Welcome to the Travel Visa Eligibility Checker.")
 
-# Get user input .
-bank_balance = float(input("What is your bank balance in USD)? "))
+# Get user input.
+bank_balance = float(input("What is your bank balance in 3000USD)? "))
 violent_felonies = int(input("How many violent felonies have you been "
                              "convicted of? "))
 non_violent_felonies = int(input("How many non-violent felonies have you "
@@ -12,7 +12,7 @@ visa_denials = int(input("How many times have you been denied a visa "
                          "before? "))
 employed = input("Are you currently employed? (Yes/No): ").strip().capitalize()
 
-# Decision structure
+# Decision structure.
 if bank_balance < 3000:
     print("❌ You are not eligible: Your bank balance is too low.")
 elif violent_felonies > 0:
