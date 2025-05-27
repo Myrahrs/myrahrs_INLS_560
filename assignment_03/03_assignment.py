@@ -37,10 +37,10 @@ try:
 
     # Output results.
     if eligible:
-        print("\n✅ Congratulations! You meet all the requirements for a "
+        print("\nCongratulations! You meet all the requirements for a "
               "tourist visa.")
     else:
-        print("\n❌ Unfortunately, you do not meet the requirements for a "
+        print("\nUnfortunately, you do NOT meet the requirements for a "
               "tourist visa.")
         print("\nHere are the visa eligibility requirements:")
         print(f"- Minimum Bank Balance: ${MIN_BANK_BALANCE}")
