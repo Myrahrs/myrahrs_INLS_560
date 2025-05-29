@@ -7,7 +7,7 @@ for car in cars:
         print(car.upper())
     else: print(car.title())
     '''
-# Exercise 2
+# Exercise 2 - Stockdale HTML Version
 pet_items = ['cat soft food', 'cat litter','car hard food', 'cat toys',]
 
 print("<ol>")
