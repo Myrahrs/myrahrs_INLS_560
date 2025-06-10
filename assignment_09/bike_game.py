@@ -1,7 +1,22 @@
+"""
+Motorcross Rally OOP Simulation
+
+This program demonstrates key OOP concepts:
+- Class creation (Bike, MotorBike, Participant)
+- Inheritance (MotorBike inherits from Bike; PedalBikeParticipant from Participant)
+- Polymorphism (simulate_race_time is overridden)
+- Encapsulation (attributes are bundled inside objects)
+- Input validation
+- Simulated race with random timing
+
+Each participant races and the winner is determined by who finishes the fastest!
+"""
+
+
 import time
 import random  # Used to simulate race times randomly
 
-class Bike:
+class Bike:  # first object / blueprint for objects to follow
     """
     Represents a general bike without an engine (e.g., pedal bike).
 
@@ -9,7 +24,10 @@ class Bike:
         brand (str): Brand name of the bike.
         model (str): Model name of the bike.
     """
-    def __init__(self, brand, model):
+    def __init__(self, brand, model):  # dunder method (double underscore) used as a constructor
+        # "__init__" is Python's constructor method.
+        # It's called when you create a new object using ClassName().
+
         """
         Initialize a Bike object.
 
@@ -20,18 +38,21 @@ class Bike:
         self.brand = brand
         self.model = model
 
-    def __str__(self):
+    def __str__(self):             #used dunder / double underscore 
         """Return string representation of the bike."""
         return f"{self.brand} {self.model}"
 
-class MotorBike(Bike):
+class MotorBike(Bike):  # Inherits from the Bike class
+    # Inheritance allows us to reuse attributes and methods from the Bike class.
+    # We only add what's unique to motorbikes (engine_cc).
+
     """
     Represents a motorbike, inheriting from Bike, with engine size.
 
     Attributes:
         engine_cc (int): Engine size in cubic centimeters.
     """
-    def __init__(self, brand, model, engine_cc):
+    def __init__(self, brand, model, engine_cc):  #used dunder / double underscore 
         """
         Initialize a MotorBike object.
 
@@ -40,14 +61,14 @@ class MotorBike(Bike):
             model (str): The model of the motorbike.
             engine_cc (int): The engine size in cc.
         """
-        super().__init__(brand, model)
+        super().__init__(brand, model)  #used dunder / double underscore 
         self.engine_cc = engine_cc
 
     def __str__(self):
         """Return string including engine size."""
         return f"{self.brand} {self.model} ({self.engine_cc}cc engine)"
 
-class Participant:
+class Participant:        # third object / blueprint for objects to follow
     """
     Base class for race participants.
 
@@ -57,7 +78,7 @@ class Participant:
         bike (Bike or MotorBike): The bike assigned to the participant.
         race_time (float): Simulated time to finish the race in seconds.
     """
-    def __init__(self, name, age, bike):
+    def __init__(self, name, age, bike):   #used dunder / double underscore 
         """
         Initialize a Participant object.
 
@@ -86,18 +107,25 @@ class Participant:
         print(f"{self.name} finished the race in {self.race_time:.2f} seconds.\n")
 
     def simulate_race_time(self):
+        # Overriding the base class method
+        # Pedal bike races are slower—simulate time between 20 and 60 seconds
+        return random.uniform(20, 60)
+       
         """
-        Generate a random race time.
-        Base method returns None; subclasses should override.
+        Generates a random race time between 20-60 sec)
+
         """
-        return None
+       
 
     def __str__(self):
         """Return string with participant details."""
         return f"{self.name}, Age: {self.age}, Riding: {self.bike}"
 
-class PedalBikeParticipant(Participant):
+class PedalBikeParticipant(Participant):  # Inheritance
     """
+    This class inherits from Participant and overrides the race time behavior.
+    Polymorphism in action: simulate_race_time() behaves differently than in MotorBikeParticipant.
+    
     Participant riding a pedal bike (usually kids).
     Race times between 20 and 60 seconds.
     """
@@ -112,7 +140,7 @@ class MotorBikeParticipant(Participant):
     def simulate_race_time(self):
         return random.uniform(15, 45)
 
-# ---------- Helper Functions for Input Validation ----------
+# ADD-ON: Helper Functions for Input Validation
 
 def input_positive_int(prompt):
     """
@@ -212,6 +240,8 @@ def main():
     print("\n--- All Participants and Race Simulation ---")
     for participant in participants:
         print(participant)
+        # This is polymorphism in action: we don't care if it's a pedal or motor participant—
+        # each object knows how to simulate its own race appropriately.
         participant.start_race()
 
     # Determine winners per race type
