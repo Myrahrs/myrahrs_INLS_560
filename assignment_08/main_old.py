@@ -1,3 +1,6 @@
+# Stockdlae Assignment 8.
+# Updated older code. 
+
 import sys  # For clean program exit
 import os  # For platform-independent file path handling
 import csv
@@ -7,13 +10,14 @@ def find(file_variable, search_variable):
     """
     Search for a term in the specified CSV file and optionally display matching entries.
     """
-    search_variable = search_variable.lower()  # Normalize search term to lowercase
+    search_variable = search_variable.lower()  # Normalize search term to lowercase.
     matched_rows = []
 
-    # Open file with utf-8 encoding and use csv.DictReader to handle CSV properly
+    # Open file with utf-8 encoding and use csv.DictReader to handle CSV properly.
+    # Initial CSVs had issues like having special characters. Created simpler oenes.
     with open(file_variable, 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
-        headers = reader.fieldnames  # Get headers for printing later
+        headers = reader.fieldnames  # Get headers for printing later; adds context to the output lines.
 
         for row in reader:
             # Check if any field in the row contains the search term (case insensitive)
