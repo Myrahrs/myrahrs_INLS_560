@@ -1,0 +1,162 @@
+# Stockdale Assignment 10 – Complete Game with Border, Title, Score, and Restart
+
+import pygame, sys, random, os
+from pygame.math import Vector2
+
+CELL_SIZE, NUM_CELLS = 30, 25
+OFFSET = 75
+WIDTH  = 2 * OFFSET + CELL_SIZE * NUM_CELLS
+HEIGHT = 2 * OFFSET + CELL_SIZE * NUM_CELLS
+GREEN, DARK_GREEN = (173, 204, 96), (43, 51, 24)
+FPS = 60
+
+pygame.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Retro Snake Game")
+clock = pygame.time.Clock()
+
+SNAKE_UPDATE = pygame.USEREVENT
+pygame.time.set_timer(SNAKE_UPDATE, 200)
+
+title_font = pygame.font.Font(None, 60)
+score_font = pygame.font.Font(None, 40)
+
+class Food:
+    def __init__(self):
+        self.size = CELL_SIZE
+        self.position = self.generate_random_pos()
+        self._update_rect()
+        img_path = os.path.join(os.path.dirname(__file__), "graphics", "food.png")
+        try:
+            raw = pygame.image.load(img_path).convert_alpha()
+            self.surface = pygame.transform.scale(raw, (self.size, self.size))
+        except Exception:
+            self.surface = pygame.Surface((self.size, self.size))
+            self.surface.fill((255, 0, 0))
+
+    @staticmethod
+    def generate_random_pos():
+        return Vector2(random.randint(0, NUM_CELLS - 1),
+                       random.randint(0, NUM_CELLS - 1))
+
+    def _update_rect(self):
+        self.rect = pygame.Rect(OFFSET + self.position.x * CELL_SIZE,
+                                OFFSET + self.position.y * CELL_SIZE,
+                                self.size, self.size)
+
+    def randomize(self):
+        self.position = self.generate_random_pos()
+        self._update_rect()
+
+    def draw(self, target):
+        target.blit(self.surface, self.rect)
+
+class Snake:
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.body = [Vector2(6,9), Vector2(5,9), Vector2(4,9)]
+        self.direction = Vector2(1,0)
+        self.add_segment = False
+
+    def update(self):
+        head = self.body[0] + self.direction
+        if not self.add_segment:
+            self.body.pop()
+        else:
+            self.add_segment = False
+        self.body.insert(0, head)
+
+    def set_direction(self, vec):
+        if vec != -self.direction:
+            self.direction = vec
+
+    def draw(self, surf):
+        for seg in self.body:
+            r = pygame.Rect(OFFSET + seg.x*CELL_SIZE,
+                            OFFSET + seg.y*CELL_SIZE,
+                            CELL_SIZE, CELL_SIZE)
+            pygame.draw.rect(surf, DARK_GREEN, r, border_radius=7)
+
+class Game:
+    def __init__(self):
+        self.snake = Snake()
+        self.food  = Food()
+        self.score = 0
+        self.state = "RUNNING"
+
+    def update(self):
+        if self.state != "RUNNING":
+            return
+        self.snake.update()
+        self._eat_food()
+        self._check_edges()
+        self._check_tail()
+
+    def _eat_food(self):
+        if self.snake.body[0] == self.food.position:
+            self.snake.add_segment = True
+            self.food.randomize()
+            self.score += 1
+
+    def _check_edges(self):
+        h = self.snake.body[0]
+        if h.x < 0 or h.x >= NUM_CELLS or h.y < 0 or h.y >= NUM_CELLS:
+            self.state = "STOPPED"
+
+    def _check_tail(self):
+        if self.snake.body[0] in self.snake.body[1:]:
+            self.state = "STOPPED"
+
+    def restart(self):
+        self.snake.reset()
+        self.food.randomize()
+        self.score = 0
+        self.state = "RUNNING"
+
+    def draw(self, surf):
+        self.food.draw(surf)
+        self.snake.draw(surf)
+
+def main():
+    game = Game()
+    key_to_vec = {pygame.K_UP:Vector2(0,-1), pygame.K_DOWN:Vector2(0,1),
+                  pygame.K_LEFT:Vector2(-1,0), pygame.K_RIGHT:Vector2(1,0)}
+
+    while True:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit(); sys.exit()
+            if e.type == pygame.USEREVENT and game.state == "RUNNING":
+                game.update()
+            if e.type == pygame.KEYDOWN:
+                if game.state == "RUNNING" and e.key in key_to_vec:
+                    game.snake.set_direction(key_to_vec[e.key])
+                elif game.state == "STOPPED":
+                    game.restart()
+
+        screen.fill(GREEN)
+
+        pygame.draw.rect(screen, DARK_GREEN,
+                         pygame.Rect(OFFSET-5, OFFSET-5,
+                                     CELL_SIZE*NUM_CELLS+10,
+                                     CELL_SIZE*NUM_CELLS+10), 5)
+
+        game.draw(screen)
+        screen.blit(title_font.render("Retro Snake", True, DARK_GREEN),
+                    (OFFSET-5, 20))
+
+        score_y = OFFSET + CELL_SIZE * NUM_CELLS + 10  # FIXED y
+        screen.blit(score_font.render(f"Score: {game.score}", True, DARK_GREEN),
+                    (OFFSET-5, score_y))
+
+        if game.state == "STOPPED":
+            msg = score_font.render("Game Over! Press any key to restart.", True, DARK_GREEN)
+            screen.blit(msg, msg.get_rect(center=(WIDTH//2, HEIGHT//2)))
+
+        pygame.display.update()
+        clock.tick(FPS)
+
+if __name__ == "__main__":
+    main()
